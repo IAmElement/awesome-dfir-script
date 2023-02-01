@@ -34,3 +34,6 @@ Get-WmiObject -Class Win32_OperatingSystem | Select-Object Caption, Version, Bui
 
 # G) Pull Event IDs 4719, 4964, 4720, and 4728
 Get-EventLog -LogName Security | Where-Object {$_.EventID -in @(4719, 4964, 4720, 4728)} | Select-Object TimeGenerated, EventID, UserName, Message | Export-Csv -Path "ImportantEventIDs.csv" -NoTypeInformation
+
+# H) Check for recent removable devices
+Get-WmiObject -Class Win32_Volume | Where-Object {$_.DriveType -eq 2} | Select-Object Name, Label, DriveLetter, Capacity, FreeSpace | Export-Csv -Path "RecentRemovableDevices.csv" -NoTypeInformation
