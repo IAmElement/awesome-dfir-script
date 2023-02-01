@@ -45,20 +45,20 @@ foreach ($folder in $downloadFolders) {
 Write-Output "Finished Stage E: All contents of all users Downloads folders have been grabbed and a SHA-256 hash has been collected."
 
 
-# Stage F: Collect basic system information
+# Stage F: Collects basic system information
 Start-Sleep -Seconds 2
 Write-Output "Starting Stage F: Collecting basic system information..."
 Get-WmiObject -Class Win32_OperatingSystem | Select-Object Caption, Version, BuildNumber, OSArchitecture, RegisteredUser, SystemDrive, TotalVirtualMemorySize, TotalVisibleMemorySize | Export-Csv -Path "SystemInformation.csv" -NoTypeInformation
 Write-Output "Finished Stage F: All system information has been collected."
 
 
-# Stage G: Pull Event IDs 4719, 4964, 4720, and 4728
+# Stage G: Pulls Event IDs 4719, 4964, 4720, and 4728
 Start-Sleep -Seconds 2
 Write-Output "Starting Stage G: Collecting event logs pertaining to event IDs 4719, 4964, 4720 and 4728..."
 Get-EventLog -LogName Security | Where-Object {$_.EventID -in @(4719, 4964, 4720, 4728)} | Select-Object TimeGenerated, EventID, UserName, Message | Export-Csv -Path "ImportantEventIDs.csv" -NoTypeInformation
 Write-Output "Finished Stage G: The specified event IDs have been collected."
 
-# Stage H: Check for recent removable devices
+# Stage H: Checks for recent removable devices
 Start-Sleep -Seconds 2
 Write-Output "Starting Stage H: Checking for recent removable media..."
 Get-WmiObject -Class Win32_Volume | Where-Object {$_.DriveType -eq 2} | Select-Object Name, Label, DriveLetter, Capacity, FreeSpace | Export-Csv -Path "RecentRemovableDevices.csv" -NoTypeInformation
